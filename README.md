@@ -42,13 +42,13 @@ and reload them **without restarting the game**. Build your own **custom levels*
 ## Requirements
 - *Kao the Kangaroo: Round 2* from Steam — `kao2.exe` of **8,423,568 bytes** (the tested build).
 - Linux with Steam/Proton. Windows should work but is untested.
-- `i686-w64-mingw32-gcc` (mingw-w64, 32-bit target) and Python 3.8+.
+- `i686-w64-mingw32-gcc` (mingw-w64, **32-bit** target) and Python 3.8+. KaoForge is distributed as source only — see **[docs/BUILDING.md](docs/BUILDING.md)** for exact install and build steps per system (including a manual build without the script).
 
 ## Install
 ```bash
 git clone https://github.com/GXAD/kaoforge && cd kaoforge
 python3 kaoforge.py doctor      # finds the game, checks the exe, compiler and installed pieces
-python3 kaoforge.py install     # builds and installs the loader and the example mods
+python3 kaoforge.py install     # compiles and installs the loader and the example mods (needs the compiler, see docs/BUILDING.md)
 ```
 **Linux / Proton only:** add this to the game's **Steam launch options** (Steam → game → Properties → Launch Options), so that Proton loads
 the `glut32.dll` from the game folder instead of its built-in one:
@@ -163,7 +163,7 @@ Every mesh gets collision. Props from the game's own levels need a one-time, in-
 
 ## Roadmap
 - Split the built-in extras (fly, camera, sliders, shadows) into regular mods, leaving a small core loader.
-- Prebuilt releases (so users do not need a compiler) and a Windows test pass.
+- A Windows test pass (prebuilt releases are deliberately not planned for now: KaoForge is a developer-oriented project).
 - More engine coverage in the scene reader, so more of the game's props and scripts can be used in custom maps.
 - Support for more `kao2.exe` builds.
 

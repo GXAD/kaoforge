@@ -97,7 +97,7 @@ def cmd_doctor(a):
     print('loader      :', 'installed' if real else 'not installed (run: kaoforge.py install)')
     mods = os.path.join(g, 'mods')
     print('mods        :', ', '.join(sorted(f[:-4] for f in os.listdir(mods) if f.endswith('.dll'))) if os.path.isdir(mods) else 'none')
-    print('compiler    :', 'ok' if shutil.which('i686-w64-mingw32-gcc') else 'MISSING: install mingw-w64 (i686-w64-mingw32-gcc)')
+    print('compiler    :', 'ok' if shutil.which('i686-w64-mingw32-gcc') else 'MISSING: install a 32-bit mingw-w64 compiler (i686-w64-mingw32-gcc) - see docs/BUILDING.md')
     print('Linux/Proton only - Steam launch option: WINEDLLOVERRIDES="glut32=n,b" %command%   (not needed on Windows)')
 
 

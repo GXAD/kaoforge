@@ -2,7 +2,7 @@
 
 1. Create `mods/<name>/<name>.c` (any number of `.c` files in the folder are compiled into `<name>.dll`).
 2. `#include "kaoforge.h"`, export `KaoMod_Init`, register callbacks (see [API.md](API.md), `mods/hello`, `mods/demo3`).
-3. `python3 kaoforge.py mods` builds and copies the DLLs to `<game>/mods/`.
+3. (Compiler setup: [BUILDING.md](BUILDING.md).) `python3 kaoforge.py mods` builds and copies the DLLs to `<game>/mods/`.
 4. In a running game open the console (`` ` `` or F10) and type `reload`. Hooks and patches installed by the mod are undone, the DLL is freed and loaded again.
    Changes to the loader itself (`loader/`) need a game restart.
 5. `kaoforge.log` in the game folder shows load messages and, after a crash in game code, the faulting address and registers.
