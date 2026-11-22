@@ -10,7 +10,7 @@ The game is a **32-bit** program, so everything must be built with a **32-bit (i
 | **Ubuntu / Debian** | `sudo apt install gcc-mingw-w64-i686 python3` | tested (Ubuntu, GCC 13) |
 | Arch / Manjaro | `sudo pacman -S mingw-w64-gcc python` | not tested |
 | Fedora | `sudo dnf install mingw32-gcc python3` | not tested |
-| Windows | install [MSYS2](https://www.msys2.org/), open the **MINGW32** shell, then `pacman -S mingw-w64-i686-gcc python git` | not tested |
+| **Windows** | no Linux shell needed — see [Windows](#windows-no-linux-shell-needed) below | not tested |
 
 Check that the compiler is there and targets 32-bit Windows:
 ```bash
@@ -18,6 +18,23 @@ i686-w64-mingw32-gcc --version
 ```
 On Ubuntu/Debian the compiler comes in two flavours (`posix` and `win32`); either works, you do not need to choose.
 KaoForge only needs the compiler and Python's standard library — no other packages.
+
+### Windows (no Linux shell needed)
+Everything runs from a normal Command Prompt or PowerShell; you do not need MSYS2, WSL or Git Bash.
+1. Install **Python 3.8+** from python.org (tick *Add python.exe to PATH*).
+2. Get a **32-bit MinGW-w64 GCC as a portable zip** (nothing to install), for example the *i686 / 32-bit* package from
+   [WinLibs](https://winlibs.com/) or [w64devkit](https://github.com/skeeto/w64devkit/releases) (take the **i686** build). Unzip it, e.g. to `C:\mingw32`.
+3. Either add `C:\mingw32\bin` to your `PATH`, or point KaoForge at the compiler for the current window:
+   ```bat
+   set KAOFORGE_CC=C:\mingw32\bin\gcc.exe
+   ```
+   (a plain `gcc.exe` is accepted as long as its target is `i686-w64-mingw32`; KaoForge checks this with `gcc -dumpmachine`).
+4. Get the source: on GitHub click **Code → Download ZIP** and unzip it (Git is optional), then in that folder:
+   ```bat
+   python kaoforge.py doctor
+   python kaoforge.py install
+   ```
+   Use `python` where the Linux examples say `python3`. On Windows the Steam launch option is **not** needed.
 
 ## 2. Get the source
 ```bash

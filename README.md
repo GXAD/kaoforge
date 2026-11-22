@@ -41,8 +41,8 @@ and reload them **without restarting the game**. Build your own **custom levels*
 
 ## Requirements
 - *Kao the Kangaroo: Round 2* from Steam — `kao2.exe` of **8,423,568 bytes** (the tested build).
-- Linux with Steam/Proton. Windows should work but is untested.
-- `i686-w64-mingw32-gcc` (mingw-w64, **32-bit** target) and Python 3.8+. KaoForge is distributed as source only — see **[docs/BUILDING.md](docs/BUILDING.md)** for exact install and build steps per system (including a manual build without the script).
+- Linux with Steam/Proton. Windows should work (no Linux shell needed, see the build guide) but is untested.
+- `i686-w64-mingw32-gcc` (mingw-w64, **32-bit** target) and Python 3.8+. KaoForge is distributed as source only — see **[docs/BUILDING.md](docs/BUILDING.md)** for exact install and build steps per system, including Windows with a portable compiler and a manual build without the script.
 
 ## Install
 ```bash

@@ -79,12 +79,29 @@ def ensure_level(name, title, num):
     return True
 
 
-CC = ['i686-w64-mingw32-gcc', '-O2', '-Wall', '-Wno-misleading-indentation', '-Wno-unused-function', '-shared']
+def find_cc():
+    """A 32-bit MinGW-w64 GCC: $KAOFORGE_CC, `i686-w64-mingw32-gcc`, or a plain `gcc` whose target is i686 MinGW
+    (this is how the portable Windows toolchains such as w64devkit / WinLibs expose it)."""
+    cands = [os.environ.get('KAOFORGE_CC')] + ['i686-w64-mingw32-gcc', 'gcc']
+    for c in filter(None, cands):
+        path = shutil.which(c)
+        if not path: continue
+        try: target = subprocess.run([path, '-dumpmachine'], capture_output=True, text=True, timeout=20).stdout.strip()
+        except Exception: continue
+        if target.startswith('i686') and 'mingw' in target: return path
+        if c == os.environ.get('KAOFORGE_CC'): print(f'WARNING: KAOFORGE_CC target is "{target}", expected i686 MinGW; using it anyway'); return path
+    return None
+
+
+def cc_cmd():
+    cc = find_cc()
+    if not cc: sys.exit('No 32-bit MinGW-w64 GCC found (need target i686-w64-mingw32). See docs/BUILDING.md, or set KAOFORGE_CC to the compiler.')
+    return [cc, '-O2', '-Wall', '-Wno-misleading-indentation', '-Wno-unused-function', '-shared']
 
 
 def build_loader():
     out = os.path.join(ROOT, 'build', 'glut32.dll'); os.makedirs(os.path.dirname(out), exist_ok=True)
-    subprocess.check_call(CC + ['-o', out, 'kaoforge.c', 'glut32.def', '-static-libgcc', '-Wl,--kill-at', '-lopengl32', '-lgdi32'],
+    subprocess.check_call(cc_cmd() + ['-o', out, 'kaoforge.c', 'glut32.def', '-static-libgcc', '-Wl,--kill-at', '-lopengl32', '-lgdi32'],
                           cwd=os.path.join(ROOT, 'loader'))
     return out
 
@@ -97,7 +114,8 @@ def cmd_doctor(a):
     print('loader      :', 'installed' if real else 'not installed (run: kaoforge.py install)')
     mods = os.path.join(g, 'mods')
     print('mods        :', ', '.join(sorted(f[:-4] for f in os.listdir(mods) if f.endswith('.dll'))) if os.path.isdir(mods) else 'none')
-    print('compiler    :', 'ok' if shutil.which('i686-w64-mingw32-gcc') else 'MISSING: install a 32-bit mingw-w64 compiler (i686-w64-mingw32-gcc) - see docs/BUILDING.md')
+    cc = find_cc()
+    print('compiler    :', cc if cc else 'MISSING: a 32-bit MinGW-w64 GCC (target i686-w64-mingw32) - see docs/BUILDING.md')
     print('Linux/Proton only - Steam launch option: WINEDLLOVERRIDES="glut32=n,b" %command%   (not needed on Windows)')
 
 
@@ -120,7 +138,7 @@ def cmd_mods(a):
         d = os.path.join(mods, m); srcs = [f for f in os.listdir(d) if f.endswith('.c')] if os.path.isdir(d) else []
         if not srcs: continue
         have.add(m); out = os.path.join(d, m + '.dll')
-        subprocess.check_call(CC + ['-I', os.path.join(ROOT, 'include'), '-o', out] + [os.path.join(d, f) for f in srcs] +
+        subprocess.check_call(cc_cmd() + ['-I', os.path.join(ROOT, 'include'), '-o', out] + [os.path.join(d, f) for f in srcs] +
                               ['-static-libgcc', '-lopengl32', '-lgdi32'])
         install_file(out, os.path.join(dst, m + '.dll')); print('mod', m, 'installed')
     for f in os.listdir(dst):
