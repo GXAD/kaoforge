@@ -1,0 +1,11 @@
+build/
+*.dll
+*.exe
+*.PAK
+*.pak
+*.ar
+__pycache__/
+*.rgba
+kaoforge_export/
+*.log
+.venv/
