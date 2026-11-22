@@ -46,7 +46,7 @@ and reload them **without restarting the game**. Build your own **custom levels*
 
 ## Install
 ```bash
-git clone https://github.com/qawAwA/kaoforge && cd kaoforge
+git clone https://github.com/GXAD/kaoforge && cd kaoforge
 python3 kaoforge.py doctor      # finds the game, checks the exe, compiler and installed pieces
 python3 kaoforge.py install     # builds and installs the loader and the example mods
 ```
