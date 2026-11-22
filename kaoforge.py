@@ -98,7 +98,7 @@ def cmd_doctor(a):
     mods = os.path.join(g, 'mods')
     print('mods        :', ', '.join(sorted(f[:-4] for f in os.listdir(mods) if f.endswith('.dll'))) if os.path.isdir(mods) else 'none')
     print('compiler    :', 'ok' if shutil.which('i686-w64-mingw32-gcc') else 'MISSING: install mingw-w64 (i686-w64-mingw32-gcc)')
-    print('Steam launch option (Proton): WINEDLLOVERRIDES="glut32=n,b" %command%')
+    print('Linux/Proton only - Steam launch option: WINEDLLOVERRIDES="glut32=n,b" %command%   (not needed on Windows)')
 
 
 def cmd_install(a):
@@ -109,7 +109,7 @@ def cmd_install(a):
     real = os.path.join(g, 'glut32_real.dll')
     if not os.path.exists(real): shutil.copyfile(os.path.join(g, 'glut32.dll'), real)     # keep the game's own glut32
     install_file(dll, os.path.join(g, 'glut32.dll'))
-    print('loader installed. Add to the Steam launch options:  WINEDLLOVERRIDES="glut32=n,b" %command%')
+    print('loader installed. Linux/Proton only: add to the Steam launch options  WINEDLLOVERRIDES="glut32=n,b" %command%  (not needed on Windows)')
     cmd_mods(a)
 
 

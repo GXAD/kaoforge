@@ -50,10 +50,13 @@ git clone https://github.com/GXAD/kaoforge && cd kaoforge
 python3 kaoforge.py doctor      # finds the game, checks the exe, compiler and installed pieces
 python3 kaoforge.py install     # builds and installs the loader and the example mods
 ```
-Then add this to the game's **Steam launch options** (Proton must be told to load the local `glut32.dll`):
+**Linux / Proton only:** add this to the game's **Steam launch options** (Steam → game → Properties → Launch Options), so that Proton loads
+the `glut32.dll` from the game folder instead of its built-in one:
 ```
 WINEDLLOVERRIDES="glut32=n,b" %command%
 ```
+**On Windows you do not need this** — the game loads the `glut32.dll` placed next to `kao2.exe` by itself.
+
 Start the game. The first line of `kaoforge.log` (in the game folder) should read `KaoForge 0.1.0 (API 4) loaded`.
 If the game is not found, pass `--game /path/to/Kao the Kangaroo Round 2` or set `KAOFORGE_GAME`.
 Remove everything with `python3 kaoforge.py uninstall` (restores the original `glut32.dll`).
@@ -151,7 +154,7 @@ Every mesh gets collision. Props from the game's own levels need a one-time, in-
 ## Troubleshooting
 | Problem | What to check |
 |---|---|
-| Nothing changes in the game | Launch option `WINEDLLOVERRIDES="glut32=n,b" %command%` set? `kaoforge.log` exists in the game folder? |
+| Nothing changes in the game | On Linux/Proton: is the launch option `WINEDLLOVERRIDES="glut32=n,b" %command%` set? (Not needed on Windows.) Does `kaoforge.log` exist in the game folder? |
 | Log says `UNSUPPORTED BUILD` | Your `kao2.exe` differs from the tested one; the loader refuses to patch it. Please open an issue with the exe size. |
 | A mod is not loaded | Look for `forge: <mod>.dll - …` lines in `kaoforge.log` (missing `KaoMod_Init`, load error). |
 | The game crashes | The crash handler writes `CRASH … eip=…` and a stack trace to `kaoforge.log`. Attach it to an issue. |
